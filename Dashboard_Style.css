@@ -1,0 +1,53 @@
+/* Styling for the welcome message */
+.welcome-message {
+    background-color: #f8f9fa;
+    padding: 20px;
+    border-radius: 10px;
+    text-align: center;
+    font-size: 2.5rem; /* Increased font size */
+    font-weight: bold; /* Add bold for emphasis */
+    color: #666560; /* Green color for the text to match buttons */
+    margin-bottom: 30px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Improved styling for the form and table */
+.form-container, .reservation-list {
+    background-color: #ffffff;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    margin-bottom: 30px;
+}
+
+.form-container {
+    border-left: 4px solid #FFC107; /* Updated border color to match primary button */
+}
+
+.reservation-list table {
+    border-collapse: separate;
+    border-spacing: 0 15px;
+}
+
+.table th, .table td {
+    vertical-align: middle;
+}
+
+/* Styling for the buttons */
+.btn-primary {
+    background-color: #FFC107;
+    border-color: #FFC107;
+}
+
+.btn-primary:hover {
+    background-color: #FFC107;
+    border-color: #FFC107;
+}
+
+.btn-danger {
+    background-color: #dc3545;
+}
+
+.btn-danger:hover {
+    background-color: #c82333;
+}

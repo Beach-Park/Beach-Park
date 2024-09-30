@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+
+<html lang="en" dir="ltr">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Beach Park Web App</title>
+  
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha2/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-aFq/bzH65dt+w6FI2ooMVUpc+21e0SRygnTpmBvdBgSdnuTN7QbdgL+OapgHtvPp" crossorigin="anonymous">
+  
+  <!-- Font Awesome for Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  
+  <!-- Custom Styles -->
+  <link rel="stylesheet" href="style.css"> <!-- Link to your custom styles -->
+</head>
+
+<body>
+  
+  <!-- Navigation Bar -->
+  <nav class="navbar navbar-expand-lg bg-body-tertiary">
+    <div class="container-fluid">
+      
+      <!-- Brand and Logo -->
+      <a class="navbar-brand" href="#"><img src="./images/car-front.svg" alt="car icon" height="30"> Beach Park</a>
+      
+      <!-- Mobile Toggle Button -->
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+        aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <!-- Navigation Links and Search Bar -->
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+          <li class="nav-item">
+            <a class="nav-link" href="#">About</a>
+          </li>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+              How it works
+            </a>
+            <ul class="dropdown-menu">
+              <li><a class="dropdown-item" href="#">Action</a></li>
+              <li><a class="dropdown-item" href="#">Another action</a></li>
+              <li><hr class="dropdown-divider"></li>
+              <li><a class="dropdown-item" href="#">Something else here</a></li>
+            </ul>
+          </li>
+        </ul>
+
+        <!-- Login and Sign Up Buttons -->
+          <div class="d-flex">
+            <a href="login.html" class="btn btn-outline-primary me-2">Sign In</a>
+            <a href="signup.html" class="btn btn-primary">Sign Up</a>
+          </div>
+          
+
+        </div>
+      </div>
+    </div>
+  </nav>
+   <!-- Main Content -->
+   <div class="px-4 pt-5 my-5 text-center border-bottom">
+    <!-- Heading -->
+    <h1 class="display-4 fw-bold text-body-emphasis">Find. Reserve. Go Beach.</h1>
+
+    <!-- Description -->
+    <div class="col-lg-6 mx-auto">
+      <p class="lead mb-4">
+        Our user-friendly platform lets you find and secure parking spots in advance, ensuring a smooth start to your day without any hassle.
+        Enjoy the convenience of knowing your spot is reserved and ready for you when you arrive.
+      </p>
+
+      <!--CSULB Parking picture with better positioning-->
+      <div class="overflow-hidden" style="max-height: 40vh; display: flex; justify-content: center; align-items: center;">
+        <div class="container px-5">
+          <img src="./images/CSULBparking.png" class="img-fluid border rounded-3 shadow-lg mb-4" alt="CSULB Parking" style="max-width: 100%; height: auto;">
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Container with 4 Columns -->
+<div class="container px-4 py-3" id="featured-3">
+  <h2 class="pb-2 border-bottom">Manage Your Spot Anytime</h2>
+  <div class="row g-3 py-4 pb-0 row-cols-1 row-cols-lg-4"> <!-- Changed to row-cols-lg-4 -->
+    
+    <!-- First Column -->
+    <div class="feature col">
+      <div class="feature-icon d-inline-flex align-items-center justify-content-center text-bg-primary bg-gradient fs-2 mb-3">
+        <img src="./images/building-fill-check.svg" alt="building" height="30">
+      </div>
+      <h3 class="fs-2">Find your zone number</h3>
+      <img src="./images/home-71.png" alt="CSULB">
+    </div>
+    
+    <!-- Second Column -->
+    <div class="feature col">
+      <div class="feature-icon d-inline-flex align-items-center justify-content-center text-bg-primary bg-gradient fs-2 mb-3">
+        <img src="./images/calendar-month.svg" alt="bus-front" height="30">
+      </div>
+      <h3 class="fs-2">Set your time</h3>
+      <img src="./images/Hour.png" alt="setHour">
+    </div>
+    
+    <!-- Third Column -->
+    <div class="feature col">
+      <div class="feature-icon d-inline-flex align-items-center justify-content-center text-bg-primary bg-gradient fs-2 mb-3">
+        <img src="./images/car-front-fill.svg" alt="chat-square-heart" height="30">
+      </div>
+      <h3 class="fs-2">Select your vehicle</h3>
+      <img src="./images/Location.png" alt="vehicle">
+    </div>
+    
+    <!-- Fourth Column -->
+    <div class="feature col">
+      <div class="feature-icon d-inline-flex align-items-center justify-content-center text-bg-primary bg-gradient fs-2 mb-3">
+        <img src="./images/cash-coin.svg" alt="bus-front" height="30">
+      </div>
+      <h3 class="fs-2">Pay & Go Beach</h3>
+      <img src="./images/StartParking.png" alt="setHour">
+    </div>
+  </div>
+</div>
+<!--Easy reservation container-->
+<div class="container mt-4 features-background">
+  <div class="row">
+    <!-- First Feature: Hassle-Free Booking -->
+    <div class="col-md-4 mb-4">
+      <div class="row align-items-center">
+        <div class="col-2 text-center text-md-right">
+          <span class="iconified-font iconified-phone text-size-36">
+            <img src="images/usability.png" alt="Hassle-Free Icon" width="36"> <!-- Replace with your icon -->
+          </span>
+        </div>
+        <div class="col-10 text-center text-md-left">
+          <div class="text-weight-black">Easy Reservation</div>
+          <p>Reserve your parking spot and focus on what matters -getting to class on time.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Second Feature: No-Surprise Pricing -->
+    <div class="col-md-4 mb-4">
+      <div class="row align-items-center">
+        <div class="col-2 text-center text-md-right">
+          <span class="iconified-font iconified-payment text-size-36">
+            <img src="images/credit-card.png" alt="No-Surprise Pricing Icon" width="36"> <!-- Replace with your icon -->
+          </span>
+        </div>
+        <div class="col-10 text-center text-md-left">
+          <div class="text-weight-black">Affordable Pricing</div>
+          <p>Know exactly how much you'll pay before you park, with no hidden fees.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Third Feature: Lightning-Fast Parking -->
+    <div class="col-md-4 mb-4">
+      <div class="row align-items-center">
+        <div class="col-2 text-center text-md-right">
+          <span class="iconified-font iconified-zag text-size-36">
+            <img src="images/car-park.png" alt="Lightning-Fast Parking Icon" width="36"> <!-- Replace with your icon -->
+          </span>
+        </div>
+        <div class="col-10 text-center text-md-left">
+          <div class="text-weight-black">Stress-Free Parking</div>
+          <p>Park in seconds and get to your classes or work without delay.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Carousel -->
+<div class="container carousel-container">
+  <div id="carouselExampleIndicators" class="carousel slide">
+    <div class="carousel-indicators">
+      <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active"
+        aria-current="true" aria-label="Slide 1"></button>
+      <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1"
+        aria-label="Slide 2"></button>
+      <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2"
+        aria-label="Slide 3"></button>
+    </div>
+    <div class="carousel-inner">
+      <div class="carousel-item active">
+        <img src="./images/twitter.png" class="d-block w-100" alt="couple">
+      </div>
+      <div class="carousel-item">
+        <img src="./images//twitter.png" class="d-block w-100" alt="dog">
+      </div>
+      <div class="carousel-item">
+        <img src="./images/twitter.png" class="d-block w-100" alt="family">
+      </div>
+    </div>
+    <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators"
+      data-bs-slide="prev">
+      <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+      <span class="visually-hidden">Previous</span>
+    </button>
+    <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators"
+      data-bs-slide="next">
+      <span class="carousel-control-next-icon" aria-hidden="true"></span>
+      <span class="visually-hidden">Next</span>
+    </button>
+  </div>
+</div>
+<div class="container">
+  <footer class="row row-cols-1 row-cols-sm-2 row-cols-md-5 py-5 my-5 border-top footer-background">
+    <div class="col mb-3">
+      <!-- Logo at the bottom -->
+      <a href="/" class="d-flex align-items-center mb-3 link-body-emphasis text-decoration-none">
+        <img src="images/logoparkingapp.png" alt="Beach Park Logo" width="120">
+      </a>
+      <p class="text-body-secondary">BeachPark ©2024. All Rights Reserved.</p>
+    </div>
+
+    <div class="col mb-3 footer-section">
+      <h5>Explore</h5>
+      <ul class="nav flex-column">
+        <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-dark">Home</a></li>
+        <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-dark">Pricing</a></li>
+        <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-dark">FAQs</a></li>
+      </ul>
+    </div>
+
+    <div class="col mb-3 footer-section">
+      <h5>Resources</h5>
+      <ul class="nav flex-column">
+        <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-dark">Help Center</a></li>
+        <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-dark">Privacy Policy</a></li>
+        <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-dark">Terms of Service</a></li>
+      </ul>
+    </div>
+
+    <div class="col mb-3 footer-section">
+      <h5>Company</h5>
+      <ul class="nav flex-column">
+        <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-dark">About Us</a></li>
+        <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-dark">Contact Us</a></li>
+      </ul>
+    </div>
+  </footer>
+</div>
+
+</body>
+
+</html>

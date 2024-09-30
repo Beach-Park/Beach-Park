@@ -1,0 +1,208 @@
+
+/* General margin adjustments to reduce space between sections */
+.container {
+    margin-top: 5px;  /* Further reduce the top margin */
+    margin-bottom: 5px;  /* Further reduce the bottom margin */
+}
+/* Feature sections - responsive centering */
+.feature {
+    padding: 15px; /* Reduce padding for more compact design */
+    text-align: center;
+}
+.feature img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+    margin: 0 auto;
+  }
+  
+  /* Add some padding/margin to the columns to create space */
+  .feature {
+    padding: 20px;
+    text-align: center;
+  }
+  
+  /* Style the icons above the headings */
+  .feature-icon {
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+    background-color: #FFBF00 !important; /* Optional: Primary color */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 20px;
+  }
+  /* Style for column headings */
+.feature h3 {
+    font-size: 1.5em; /* Increase font size for emphasis */
+    font-weight: bold; /* Make the text bold */
+    color: #333; /* Dark color for better contrast */
+    margin: 10px 0; /* Add some spacing above and below */
+
+}
+#featured-3 {
+    margin-bottom: 10px;  /* Reduce bottom margin */
+}
+/* Optional: Style for the main heading */
+#featured-3 h2 {
+    color: #333; /* Change to your desired color */
+}
+  /* Custom media queries for different screen sizes */
+@media (max-width: 576px) {
+    /* Stack columns vertically on small screens */
+    .row-cols-lg-3 .feature {
+        margin-bottom: 30px;
+    }
+}
+
+@media (min-width: 992px) {
+    /* Ensure all 4 columns appear side-by-side on larger screens */
+    .row-cols-lg-4 .col {
+        flex: 1 0 25%; /* Make sure each column takes up 25% width */
+    }
+}
+/* Container for the columns */
+.features-container {
+    display: flex;
+    justify-content: center; /* Center the columns within the container */
+    flex-wrap: wrap; /* Ensure they wrap on smaller screens */
+    margin: 0 auto; /* Center the container itself */
+    padding: 0 15px; /* Add padding to the container to avoid touching edges */
+    
+}
+
+/* Featured columns styling */
+#featured-3 {
+    display: flex;
+    flex-wrap: wrap; /* Ensure columns wrap on smaller screens */
+    justify-content: center; /* Center the columns within the container */
+}
+
+/* Featured columns styling */
+#featured-3 .feature {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(252, 222, 112, 0.75); /* 75% opacity */
+    margin: 10px; /* Reduce space between columns */
+    border-radius: 20px;
+    max-width: 250px; /* Max width for each column */
+    padding: 40px 10px 30px; /* Reduced padding */
+}
+
+  
+ /* Container for the carousel */
+.carousel-container {
+    max-width: 800px; /* Adjust this value as needed */
+    margin: 10px auto; /* Center the carousel */
+    background-color: #f0f0f0; /* Light gray background */
+    padding: 20px; /* Add some padding around the carousel */
+    border-radius: 10px; /* Optional: Add rounded corners */
+}
+
+/* Style for carousel images */
+.carousel-inner img {
+    width: 100%; /* Make images responsive to container width */
+    height: auto; /* Maintain aspect ratio */
+    object-fit: cover; /* Ensure images cover the container without distortion */
+}
+
+/* Optional: Adjust carousel controls size */
+.carousel-control-prev-icon,
+.carousel-control-next-icon {
+    width: 30px; /* Adjust width as needed */
+    height: 30px; /* Adjust height as needed */
+}
+
+/* Optional: Add some spacing for carousel controls */
+.carousel-control-prev,
+.carousel-control-next {
+    width: 5%; /* Adjust as needed to position controls */
+}
+
+/* Custom styles for Sign In and Sign Up buttons */
+.btn-outline-primary {
+    color: #FFC107; /* Yellow text color */
+    border-color: #FFC107; /* Yellow border color */
+}
+.btn-outline-primary:hover {
+    background-color: #FFC107; /* Yellow background on hover */
+    color: #fff; /* White text color on hover */
+}
+.btn-primary {
+    background-color: #FFC107; /* Yellow background color */
+    border-color: #FFC107; /* Yellow border color */
+    color: #fff; /* White text color */
+}
+.btn-primary:hover {
+    background-color: #e0a800; /* Darker yellow for hover effect */
+    border-color: #e0a800; /* Darker yellow border color */
+}
+/* adding another container
+/* Background for the Features Section */
+.features-background {
+    background-color: #f1f1f1; /* Light gray background */
+    border-radius: 10px; /* Rounded corners */
+    margin-bottom: 30px; /* Reduced bottom margin */
+    padding: 20px; /* Remove side padding and focus on top and bottom */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1); /* Optional shadow for better design */
+    
+}
+/* Adjust padding for smaller screens */
+@media (max-width: 768px) {
+    .features-background {
+      padding: 15px; /* Further reduced padding for smaller screens */
+    }
+} 
+  /* Adjust text styles for the features */
+  .features-background .text-weight-black {
+    font-weight: 700;
+    color: #333;
+    margin-top: 15px;
+  }
+  
+  .features-background p {
+    color: #666;
+    font-size: 0.9rem;
+    margin-top: 10px;
+    margin-bottom: 5px;
+  }
+
+/*footer of web page
+/* Footer background styling */
+.footer-section {
+    background-color: rgba(255, 193, 7, 0.8); /* Add opacity to the yellow background */
+    padding: 20px;
+    border-radius: 8px; /* Optional: To give rounded corners */
+  }
+  /* Footer text and link styling */
+  .footer-section h5 {
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 1rem;
+  }
+  
+  .footer-section a {
+    color: #333; /* Dark text for better contrast */
+  }
+  
+  .footer-section a:hover {
+    color: #000; /* Darker hover effect */
+    text-decoration: underline; /* Add underline on hover */
+  }
+  
+  /* Ensure footer container is aligned */
+  .footer-background {
+    padding: 30px 0;
+  }
+  .footer-background p {
+    color: rgba(51, 51, 51, 0.7); /* Slightly muted text for copyright */
+    font-size: 0.9rem;
+  }
+  
+  
