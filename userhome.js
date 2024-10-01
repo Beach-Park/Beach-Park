@@ -1,6 +1,7 @@
 const http = require('http');
 const fs = require('fs');
 const WebSocket = require('ws');
+const fetch = require('node-fetch'); // Use require for version 2
 const port = 3000;
 
 const server = http.createServer(function(req, res) {
@@ -28,41 +29,21 @@ const broadcast = (data) => {
     });
 };
 
-// Function to fetch and process the parking status
+// Function to fetch and process the parking status from Firebase
 const fetchParkingStatus = async () => {
     try {
-        const fetch = (await import('node-fetch')).default; // Dynamic import
-        const response = await fetch('https://raw.githubusercontent.com/ayadric/Website_BeachPark_UserHome/main/Data/Spot_One/parking_status.txt'); // Your raw URL
-        const data = await response.text();
-        const lines = data.split('\n');
+        const response = await fetch('https://parking-reservation-syst-631f1-default-rtdb.firebaseio.com/parkingStatus.json'); // Correct URL for your Firebase
+        const data = await response.json();
 
-        const statusMessages = [];
-
-        if (lines[0]) {
-            if (lines[0].includes('10')) {
-                statusMessages.push('Spot 1 Available');
-            } else if (lines[0].includes('11')) {
-                statusMessages.push('Spot 1 Unavailable');
-            }
+        // Check if the spots array exists
+        if (!data || !data.spots) {
+            console.error('No parking status data available');
+            return; // Exit if there's no data
         }
 
-        if (lines[1]) {
-            if (lines[1].includes('20')) {
-                statusMessages.push('Spot 2 Available');
-            } else if (lines[1].includes('21')) {
-                statusMessages.push('Spot 2 Unavailable');
-            }
-        }
+        const statusMessages = data.spots; // Use the spots array directly
 
-        if (lines[2]) {
-            if (lines[2].includes('30')) {
-                statusMessages.push('Spot 3 Available');
-            } else if (lines[2].includes('31')) {
-                statusMessages.push('Spot 3 Unavailable');
-            }
-        }
-
-        const finalStatus = statusMessages.join(', ');
+        const finalStatus = statusMessages.join(', '); // Combine messages
 
         broadcast(finalStatus);
     } catch (error) {
