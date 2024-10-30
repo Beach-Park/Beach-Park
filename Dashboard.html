@@ -3,23 +3,110 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Parking Dashboard</title>
+    <title>Parking Reservation</title>
+    <style>
+        /* Global and body styling */
+        html, body {
+            background-color: #f4f7fa; /* Softer background */
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: #444444;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
 
-    <!-- Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha2/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="Dashboard_style.css"> <!-- Custom CSS file -->
+        /* Main container styling */
+        .container {
+            background-color: #ffffff; 
+            width: 95%;
+            max-width: 650px;
+            padding: 30px;
+            box-shadow: 0px 10px 25px rgba(0, 0, 0, 0.1);
+            border-radius: 12px;
+            text-align: center;
+        }
+
+        h1 {
+            font-size: 2.5em;
+            margin-bottom: 25px;
+            color: #e3b80d;
+            font-weight: 700;
+        }
+
+        #parkingStatus {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 15px;
+        }
+
+        /* Parking spot button style */
+        .parking-spot {
+            padding: 18px;
+            font-size: 1em;
+            font-weight: bold;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.2s;
+            border: 1px solid transparent;
+            box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.08);
+        }
+
+        .parking-spot:hover {
+            transform: translateY(-3px);
+        }
+
+        .available {
+            background-color: #e0f7e9; 
+            color: #FFC107;
+            border: 1px solid #dbea36;
+        }
+
+        .unavailable {
+            background-color: #ffe0e4;
+            color: #a42b2d;
+            border: 1px solid #a42b2d;
+            cursor: not-allowed;
+        }
+
+        /* General button style */
+        button {
+            padding: 12px 20px;
+            font-size: 1em;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            border: none;
+            outline: none;
+            transition: all 0.3s ease;
+            margin-top: 20px;
+            color: #ffffff;
+            background-color: #00695c;
+        }
+
+        button:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Parking Reservation</h1>
+        <div id="parkingStatus">Loading...</div>
+    </div>
 
     <!-- Firebase SDK -->
     <script src="https://www.gstatic.com/firebasejs/9.20.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.20.0/firebase-database-compat.js"></script>
 
     <script>
-        // Firebase configuration
         const firebaseConfig = {
             databaseURL: "https://parking-reservation-syst-631f1-default-rtdb.firebaseio.com"
         };
 
-        // Initialize Firebase
         if (!firebase.apps.length) {
             firebase.initializeApp(firebaseConfig);
         } else {
@@ -28,91 +115,13 @@
 
         const dbRef = firebase.database().ref('parkingSpots');
 
-        // Function to load reservations from Firebase
-        function loadReservations(userId) {
-            dbRef.child('reservations').orderByChild('userId').equalTo(userId).on('value', snapshot => {
-                const reservations = snapshot.val();
-                if (reservations) {
-                    displayReservations(reservations);
-                } else {
-                    document.getElementById('reservationTableBody').innerHTML = "<tr><td colspan='7'>No reservations found.</td></tr>";
-                }
-            });
-        }
-
-        function displayReservations(reservations) {
-            const reservationTableBody = document.getElementById('reservationTableBody');
-            reservationTableBody.innerHTML = ""; // Clear any existing reservations
-
-            for (const id in reservations) {
-                const reservation = reservations[id];
-                const row = document.createElement('tr');
-                row.innerHTML = `
-                    <td>${reservation.car}</td>
-                    <td>${reservation.licensePlate}</td>
-                    <td>${new Date(reservation.date).toLocaleDateString()}</td>
-                    <td>${reservation.parkingSpot}</td>
-                    <td>${reservation.duration} minutes</td>
-                    <td>${reservation.status}</td>
-                    <td><button class="btn btn-danger btn-sm" onclick="cancelReservation('${id}')">Cancel</button></td>
-                `;
-                reservationTableBody.appendChild(row);
-            }
-        }
-
-        // Function to make a reservation
-        function reserveParking(event) {
-            event.preventDefault();
-
-            const userId = localStorage.getItem('userId');
-            const car = document.getElementById('car').value;
-            const licensePlate = document.getElementById('licensePlate').value;
-            const date = document.getElementById('date').value;
-            const parkingSpot = document.getElementById('parkingSpot').value;
-            const duration = document.getElementById('duration').value;
-
-            if (!userId || !car || !licensePlate || !date || !parkingSpot || !duration) {
-                alert('Please fill all fields');
-                return;
-            }
-
-            const reservationId = dbRef.child('reservations').push().key;
-            const newReservation = {
-                userId, car, licensePlate, date, parkingSpot, duration, status: 'Reserved'
-            };
-
-            dbRef.child(`reservations/${reservationId}`).set(newReservation)
-                .then(() => {
-                    alert('Parking spot reserved successfully');
-                    loadReservations(userId);
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                    alert(`Failed to reserve parking spot: ${error.message}`);
-                });
-        }
-
-        // Function to cancel a reservation
-        function cancelReservation(reservationId) {
-            dbRef.child(`reservations/${reservationId}`).remove()
-                .then(() => {
-                    alert("Reservation cancelled successfully.");
-                    const userId = localStorage.getItem('userId');
-                    loadReservations(userId);
-                })
-                .catch(error => {
-                    console.error("Failed to cancel reservation:", error);
-                });
-        }
-
-        // Function to update parking status on the page
-        function updateParkingStatus(status) {
+        const updateParkingStatus = (status) => {
             const parkingStatusDiv = document.getElementById('parkingStatus');
             parkingStatusDiv.innerHTML = '';
 
             for (const [spot, availability] of Object.entries(status)) {
                 const button = document.createElement('button');
-                button.className = 'parking-spot ' + (availability.toLowerCase());
+                button.className = `parking-spot ${availability.toLowerCase()}`;
                 button.innerText = `${spot}: ${availability}`;
 
                 if (availability === 'Available') {
@@ -123,101 +132,35 @@
 
                 parkingStatusDiv.appendChild(button);
             }
-        }
+        };
 
-        // Listen for parking spot availability from Firebase
-        dbRef.child('parkingStatus').on('value', snapshot => {
+        const makeReservation = (spot) => {
+            const confirmReservation = confirm(`Do you want to reserve ${spot}?`);
+            if (confirmReservation) {
+                const updates = {};
+                updates[spot] = 'Reserved';
+                dbRef.update(updates)
+                    .then(() => {
+                        alert(`${spot} has been reserved successfully!`);
+                    })
+                    .catch((error) => {
+                        console.error('Error making reservation:', error);
+                        alert('Failed to reserve the spot. Please try again.');
+                    });
+            }
+        };
+
+        dbRef.on('value', (snapshot) => {
             const parkingStatus = snapshot.val();
             if (parkingStatus) {
                 updateParkingStatus(parkingStatus);
             } else {
                 document.getElementById('parkingStatus').innerText = 'No parking data available.';
             }
+        }, (error) => {
+            console.error('Error fetching data from Firebase:', error);
+            document.getElementById('parkingStatus').innerText = 'Error loading parking data.';
         });
-
-        // Call initDashboard when the page loads
-        document.addEventListener('DOMContentLoaded', () => {
-            const userId = localStorage.getItem('userId');
-            initDashboard(userId);
-        });
-
-        // Initialize dashboard on page load
-        function initDashboard(userId) {
-            const userName = localStorage.getItem('userName'); // Retrieve user's name
-            if (!userId) {
-                alert('Please log in first');
-                window.location.href = 'login.html';
-                return;
-            }
-            document.getElementById('welcomeMessage').innerText = `Welcome, ${userName}`;
-            loadReservations(userId);
-        }
     </script>
-</head>
-<body>
-    <div class="container">
-        <div class="welcome-message text-center mt-4 mb-4" id="welcomeMessage"></div>
-
-        <!-- Parking Spot Status -->
-        <div class="parking-status-container text-center mb-4">
-            <h2>Parking Spot Status</h2>
-            <div id="parkingStatus">Waiting for updates...</div>
-        </div>
-
-        <!-- Reservation Form -->
-        <div class="form-container">
-            <h2>Reserve a Parking Spot</h2>
-            <form id="reservationForm" onsubmit="reserveParking(event)">
-                <div class="mb-3">
-                    <label for="car" class="form-label">Car Model</label>
-                    <input type="text" class="form-control" id="car" placeholder="Enter your car model" required>
-                </div>
-                <div class="mb-3">
-                    <label for="licensePlate" class="form-label">Car License Plate</label>
-                    <input type="text" class="form-control" id="licensePlate" placeholder="Enter your car's license plate" required>
-                </div>
-                <div class="mb-3">
-                    <label for="date" class="form-label">Reservation Date</label>
-                    <input type="date" class="form-control" id="date" required>
-                </div>
-                <div class="mb-3">
-                    <label for="parkingSpot" class="form-label">Parking Spot</label>
-                    <input type="text" class="form-control" id="parkingSpot" placeholder="Enter parking spot" required>
-                </div>
-                <div class="mb-3">
-                    <label for="duration" class="form-label">Reservation Duration</label>
-                    <select class="form-control" id="duration" required>
-                        <option value="30">30 minutes</option>
-                        <option value="120">2 hours</option>
-                        <option value="240">4 hours</option>
-                        <option value="720">12 hours</option>
-                    </select>
-                </div>
-                <button type="submit" class="btn btn-primary">Reserve Parking</button>
-            </form>
-        </div>
-
-        <!-- Display list of reservations -->
-        <div class="reservation-list mt-4">
-            <h2>Your Reservations</h2>
-            <table class="table table-striped">
-                <thead>
-                    <tr>
-                        <th>Car</th>
-                        <th>License Plate</th>
-                        <th>Date</th>
-                        <th>Parking Spot</th>
-                        <th>Duration</th>
-                        <th>Status</th>
-                        <th>Action</th>
-                    </tr>
-                </thead>
-                <tbody id="reservationTableBody"></tbody>
-            </table>
-        </div>
-    </div>
-
-    <!-- Bootstrap JS -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha2/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
