@@ -9,9 +9,9 @@ const app = express();
 app.use(express.json()); // To parse JSON request bodies
 app.use(cors());         // To enable CORS
 
-// Firebase Admin SDK setup (Make sure you have the service account JSON file from Firebase)
+// Firebase Admin SDK setup
 firebaseAdmin.initializeApp({
-    credential: firebaseAdmin.credential.cert('path/to/serviceAccountKey.json'),
+    credential: firebaseAdmin.credential.cert("C:/Users/mar_v/Desktop/SeniorPro_Parking/ParkingApp/server/parking-reservation-syst-631f1-firebase-adminsdk-h4sj1-f4329cd6cd.json"),
     databaseURL: "https://parking-reservation-syst-631f1-default-rtdb.firebaseio.com"
 });
 const dbRef = firebaseAdmin.database().ref('parkingSpots');
@@ -28,7 +28,7 @@ app.post("/login", (req, res) => {
         .then(user => {
             if (user) {
                 if (user.password === password) {
-                    res.json({ message: "Success", userId: user._id, userName: user.name }); // Return userId on successful login
+                    res.json({ message: "Success", userId: user._id, userName: user.name });
                 } else {
                     res.json("The password is incorrect");
                 }
@@ -50,11 +50,9 @@ app.post("/register", (req, res) => {
 app.post("/reserve", (req, res) => {
     const { userId, car, licensePlate, date, parkingSpot, duration } = req.body;
 
-    // Check if the parking spot is available
     dbRef.child(parkingSpot).once('value', (snapshot) => {
         const spotStatus = snapshot.val();
         if (spotStatus === "Available") {
-            // Reserve the spot in the database
             ParkingReservationModel.create({
                 userId: userId,
                 car: car,
@@ -64,7 +62,6 @@ app.post("/reserve", (req, res) => {
                 duration: duration
             })
             .then(reservation => {
-                // Update parking spot status to reserved in Firebase
                 dbRef.child(parkingSpot).set('Reserved');
                 res.json(reservation);
             })
@@ -88,10 +85,8 @@ app.get("/reservations/:userId", (req, res) => {
 app.post("/cancel", (req, res) => {
     const { reservationId, parkingSpot } = req.body;
 
-    // First, cancel the reservation in the MongoDB
     ParkingReservationModel.findByIdAndUpdate(reservationId, { status: 'cancelled' }, { new: true })
     .then(updatedReservation => {
-        // If the reservation is updated, update the parking spot status in Firebase to "Available"
         dbRef.child(parkingSpot).set('Available')
         .then(() => res.json(updatedReservation))
         .catch(err => res.status(500).json({ message: "Failed to update parking spot in Firebase", error: err }));
