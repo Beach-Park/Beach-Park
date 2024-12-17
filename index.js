@@ -9,9 +9,9 @@ const app = express();
 app.use(express.json()); // To parse JSON request bodies
 app.use(cors());         // To enable CORS
 
-// Firebase Admin SDK setup
+// Firebase Admin SDK setupnode
 firebaseAdmin.initializeApp({
-    credential: firebaseAdmin.credential.cert("C:/Users/mar_v/Desktop/SeniorPro_Parking/ParkingApp/server/parking-reservation-syst-631f1-firebase-adminsdk-h4sj1-f4329cd6cd.json"),
+    credential: firebaseAdmin.credential.cert("C:/Users/mar_v/Desktop/SeniorPro_Parking/ParkingApp/server/parking-reservation-syst-631f1-firebase-adminsdk-h4sj1-48794859ef.json"),
     databaseURL: "https://parking-reservation-syst-631f1-default-rtdb.firebaseio.com"
 });
 const dbRef = firebaseAdmin.database().ref('parkingSpots');
