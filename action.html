@@ -3,83 +3,178 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Parking Status</title>
-    <!-- Bootstrap CSS -->
-    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <title>Parking Reservation</title>
     <style>
-        body {
-            background-color: #f8f9fa; /* Light background for contrast */
+        /* Overall background and body styling */
+        html, body {
+            background-color: #fdf6e3; /* Soft cream background */
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
             color: #333;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
         }
-        .header {
-            background-color: #FFC107; /* Yellow background */
-            padding: 20px;
-            border-radius: 5px;
+
+        /* Main content container */
+        .container {
+            background-color: #ffffff; /* White background for the content area */
+            width: 90%;
+            max-width: 600px;
+            padding: 30px;
+            box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.1);
+            border-radius: 12px;
+            text-align: center;
+        }
+
+        h1 {
+            font-size: 2.2em;
             margin-bottom: 20px;
+            color: #333;
+            font-weight: 700;
+            letter-spacing: 0.05em;
         }
-        .status {
-            background-color: #FFC107; /* Yellow status box */
-            border: 2px solid #FFC107; /* Yellow border */
-            padding: 20px;
+
+        #parkingStatus {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 15px;
+        }
+
+        /* Parking spot button style */
+        .parking-spot {
+            font-size: 1em;
+            padding: 15px;
+            border-radius: 8px;
+            font-weight: bold;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+            border: none;
+        }
+
+        .available {
+            background-color: #e8f5e9; /* Light green background for available */
+            color: #2e7d32; /* Darker green text */
+            border: 2px solid #2e7d32;
+        }
+
+        .unavailable {
+            background-color: #ffebee; /* Light red for unavailable */
+            color: #c62828; /* Dark red text */
+            border: 2px solid #c62828;
+        }
+
+        /* Reservation button style */
+        button {
+            padding: 10px 15px;
+            font-size: 16px;
             border-radius: 5px;
-            margin-top: 15px;
-            transition: border-color 0.3s;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background-color 0.3s ease, color 0.3s ease;
         }
-        .status:hover {
-            border-color: #e0a800; /* Darker yellow for hover */
-        }
-        .status p {
-            color: #666; /* Gray text */
+
+        button:disabled {
+            cursor: not-allowed;
+            opacity: 0.7;
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <div class="header text-center">
-            <h1>Parking Status</h1>
-            <p>Stay updated with the current parking availability.</p>
-        </div>
-        
-        <div class="status text-center">
-            <h2 id="status">Waiting for updates...</h2>
-            <p>Refresh every 5 seconds to get the latest parking status.</p>
-        </div>
-        
-        <div class="text-center">
-            <button id="refreshButton" class="btn btn-warning" style="margin-top: 20px;">Refresh Now</button>
-        </div>
+        <h1>Parking Reservation</h1>
+        <div id="parkingStatus">Loading...</div>
     </div>
-    
+
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.20.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.20.0/firebase-database-compat.js"></script>
+
     <script>
-        const statusDiv = document.getElementById('status');
-        const socket = new WebSocket('ws://localhost:3000'); // Adjust the WebSocket URL as needed
+    // Firebase configuration
+    const firebaseConfig = {
+        databaseURL: "https://parking-reservation-syst-631f1-default-rtdb.firebaseio.com"
+    };
 
-        socket.onmessage = function(event) {
-            statusDiv.textContent = event.data; // Update the status on receiving a message
-        };
+    // Initialize Firebase
+    if (!firebase.apps.length) {
+        firebase.initializeApp(firebaseConfig);
+    } else {
+        firebase.app();
+    }
 
-        socket.onopen = function() {
-            console.log('Connected to the WebSocket server');
-        };
+    const dbRef = firebase.database().ref('parkingSpots');
 
-        socket.onclose = function() {
-            console.log('Disconnected from the WebSocket server');
-        };
+    // Function to update parking status on the page
+    const updateParkingStatus = (status) => {
+        const parkingStatusDiv = document.getElementById('parkingStatus');
+        parkingStatusDiv.innerHTML = ''; // Clear the current content
 
-        socket.onerror = function(error) {
-            console.error('WebSocket error:', error);
-        };
+        for (const [spot, availability] of Object.entries(status)) {
+            const button = document.createElement('button');
+            button.className = 'parking-spot ' + (availability.toLowerCase());
+            button.innerText = `${spot}: ${availability}`;
 
-        // Refresh button functionality
-        document.getElementById('refreshButton').addEventListener('click', () => {
-            socket.send('Refresh'); // Send a message to trigger a status update (if needed)
-            statusDiv.textContent = 'Refreshing...'; // Indicate refresh action
-        });
-    </script>
+            if (availability === 'Available') {
+                button.onclick = () => makeReservation(spot);
+            } else if (availability === 'Reserved') {
+                button.onclick = () => unreserveSpot(spot);
+            }
 
-    <!-- Bootstrap JS and dependencies -->
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+            parkingStatusDiv.appendChild(button);
+        }
+    };
+
+    // Function to handle making a reservation
+    const makeReservation = (spot) => {
+        const confirmReservation = confirm(`Do you want to reserve ${spot}?`);
+        if (confirmReservation) {
+            const updates = {};
+            updates[spot] = 'Reserved';
+            dbRef.update(updates)
+                .then(() => {
+                    alert(`${spot} has been reserved successfully!`);
+                })
+                .catch((error) => {
+                    console.error('Error making reservation:', error);
+                    alert('Failed to reserve the spot. Please try again.');
+                });
+        }
+    };
+
+    // Function to handle unreserving a parking spot
+    const unreserveSpot = (spot) => {
+        const confirmUnreserve = confirm(`Do you want to unreserve ${spot}?`);
+        if (confirmUnreserve) {
+            const updates = {};
+            updates[spot] = 'Available';
+            dbRef.update(updates)
+                .then(() => {
+                    alert(`${spot} is now available!`);
+                })
+                .catch((error) => {
+                    console.error('Error unreserving the spot:', error);
+                    alert('Failed to unreserve the spot. Please try again.');
+                });
+        }
+    };
+
+    // Listen for changes in parking status from Firebase
+    dbRef.on('value', (snapshot) => {
+        const parkingStatus = snapshot.val();
+        if (parkingStatus) {
+            updateParkingStatus(parkingStatus);
+        } else {
+            document.getElementById('parkingStatus').innerText = 'No parking data available.';
+        }
+    }, (error) => {
+        console.error('Error fetching data from Firebase:', error);
+        document.getElementById('parkingStatus').innerText = 'Error loading parking data.';
+    });
+</script>
 </body>
 </html>
